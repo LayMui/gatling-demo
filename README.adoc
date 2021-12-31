@@ -39,6 +39,4 @@ $ ./gradlew gatlingRun
 [source, bash]
 ----
 $ ./gradlew gatlingRun-computerdatabase.BasicSimulation
-
-$ ./gradlew gatlingRun-computerdatabase.RecordedSimulation
 ----

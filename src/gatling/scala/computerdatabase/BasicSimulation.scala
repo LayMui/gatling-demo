@@ -50,8 +50,17 @@ object Search {
       .formParam("""company""", """37"""))
 }
 
-  val scn = scenario("Computer Database performance testing") // A scenario is a chain of requests and pauses
+  val scn = scenario("ComputerDatabase") // A scenario is a chain of requests and pauses
 .exec(Search.searchByName)
 
-  setUp(scn.inject(atOnceUsers(1)).protocols(httpProtocol))
+ val admin = scenario("Admin_Users") // For admin user
+.exec(Search.searchByName)
+ val user = scenario("Normal_Users") // For user
+.exec(Search.searchByName)
+
+  setUp(
+    // scn.inject(atOnceUsers(1)),
+    // admin.inject(atOnceUsers(1)),
+    user.inject(atOnceUsers(10))
+  .protocols(httpProtocol))
 }
