@@ -13,22 +13,21 @@ class BasicSimulation extends Simulation {
     .acceptLanguageHeader("en-US,en;q=0.5")
     .userAgentHeader("Mozilla/5.0 (Macintosh; Intel Mac OS X 10.8; rv:16.0) Gecko/20100101 Firefox/16.0")
 
-
-  val scn = scenario("Scenario Name") // A scenario is a chain of requests and pauses
-    .exec(http("request_1")
+object Search {
+  val searchByName = exec(http("Get_ComputerName")
       .get("/"))
     .pause(7) // Note that Gatling has recorder real time pauses
     .exec(http("request_2")
       .get("/computers?f=macbook"))
-    .pause(2)
-    .exec(http("request_3")
+    .pause(2) 
+    .exec(http("Get_ComputerByID")
       .get("/computers/6"))
 
     .pause(3)
-    .exec(http("request_4")
+    .exec(http("Get_ALL")
       .get("/"))
     .pause(2)
-    .exec(http("request_5")
+    .exec(http("Get_ByID")
       .get("/computers?p=1"))
     .pause(670.milliseconds)
     .exec(http("request_6")
@@ -49,6 +48,10 @@ class BasicSimulation extends Simulation {
       .formParam("""introduced""", """2012-05-30""")
       .formParam("""discontinued""", """""")
       .formParam("""company""", """37"""))
+}
+
+  val scn = scenario("Computer Database performance testing") // A scenario is a chain of requests and pauses
+.exec(Search.searchByName)
 
   setUp(scn.inject(atOnceUsers(1)).protocols(httpProtocol))
 }
